@@ -38,22 +38,21 @@ function [x0, exit_flag] = newton_solver(fun,x0,dxtol,ftol,max_iter,dxmax)
 
     while abs(f_x) > ftol && abs(x1-x0) > dxtol
         
-        if abs(x1-x0) > dxmax
-            exit_flag = 1;
-            break
-        end
+        
 
-        x0 = x1;
         [f_x, dfdx] = fun(x0);
         
-       if dfdx == 0
+       if dfdx == 0 || abs(x1-x0) < dxmax
             exit_flag = 1;
             break
        end
 
-       x1 = x0 - f_x/dfdx;
 
-       iter = iter + 1;
+       x_temp = x0;
+       x1 = x0 - f_x/dfdx;
+       x0 = ;
+
+       iter = iter + 1
 
        if iter >= max_iter
             exit_flag = 2;
@@ -66,4 +65,4 @@ end
 %exit_flag = 2 is iter limit
 %exit_flag = 0 is ran successfully
 
-[root, flag] = newton_solver(@test_function, 30, 1e-14, 1e-14, 10, 50)
+[root, flag] = newton_solver(@test_function, -5, 1e-14, 1e-14, 100, 50)
