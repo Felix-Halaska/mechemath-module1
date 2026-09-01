@@ -1,33 +1,17 @@
-% function [x_new, exit_flag] = newton_solver(fun,x0,dxtol,ftol,max_iter,dxmax)
-%     iter = 1;
-%     exit_flag = False;
-%     [f_x, ~] = test_function(x0);
-% 
-%     while abs(f_x) > ftol
-%         [f_x, dfdx] = test_function(x_old);    
-%         x_new = x_old - f_x/dfdx;
-% 
-%         if iter == max_iter
-%             exit_flag = True;
-%             break
-%         end
-%         iter = iter+1;
-%         x_old = x_new;
-%     end
-% end
+function x = secant_solver(fun,x_0, x_1)
+    [f_x_0, dfdx_0] = fun(x_0);
+    [f_x_1, dfdx_1] = fun(x_1);
+    while abs(f_x_0) > 10e-7
+       x = ((x_1*f_x_0) - (x_0*f_x_1))/(f_x_0 - f_x_1);
+       x_1 = x_0;
+       x_0 = x;
+       [f_x_0, dfdx_0] = fun(x_0);
+       [f_x_1, dfdx_1] = fun(x_1);
+    end
+end
 
+root = secant_solver(@test_function, 30, 40)
 
-% function x = newton_solver(fun,x0)
-%     x = x0;
-%     [f_x, dfdx] = fun(x);
-%     while abs(f_x) > 10e-7
-%        x = x - f_x/dfdx;
-%        [f_x, dfdx] = fun(x);
-%     end
-% end
- 
-% %testing
-% root = newton_solver(@test_function, 30)
 
 function [x0, exit_flag] = newton_solver(fun,x0,dxtol,ftol,max_iter,dxmax)
     iter = 1;
