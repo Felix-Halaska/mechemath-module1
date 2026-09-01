@@ -1,0 +1,27 @@
+function [x, exit_flag] = bisection_solver(func,x_left,x_right,dxtol,ftol,max_iter)
+
+    [func_m, ~] = func(x_left);
+    x_m = (x_left+x_right)/2;
+
+    if 
+
+    while abs(func_m) > ftol && abs(x_left - x_right) > dxtol
+        x_m = (x_left+x_right)/2;
+
+        [func_m, ~] = func(x_m);
+        [func_l, ~] = func(x_left);
+        [func_r, ~] = func(x_right);
+
+        if func_m*func_l < 0
+            x_right = x_m;
+        elseif func_m*func_r < 0
+            x_left = x_m;
+        end
+
+    end
+    
+    x = x_m;
+end
+
+
+root = bisection_solver(@test_function, 30, 40, 10e-14, 10e-14)
