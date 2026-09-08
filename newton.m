@@ -66,4 +66,4 @@ end
 %exit_flag = 2 is iter limit
 %exit_flag = 0 is ran successfully
 
-[root, flag] = newton_solver(@test_function, 30, 1e-14, 1e-14, 10, 50)
+% [root, flag] = newton_solver(@test_function, 30, 1e-14, 1e-14, 10, 50)

@@ -124,11 +124,7 @@ x_guess0, guess_list1, guess_list2, filter_list)
     loglog(fit_line_x,fit_line_y,'k-','linewidth',2)
     hold off
     xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
-    title('Error Convergence Plot for F0 Method');
-    legend(["Raw", "Filtered","Regression Fit"],Location="Northwest", FontSize=15)
-
-    exportgraphics(gca, 'plots/f0.png', 'Resolution', 300);
-
+    title('Error Convergence Plot for Bisection Method');
 end
 
 %example for how to compute the fit line
@@ -183,4 +179,4 @@ iguess_2 = iguess + 0.1;
 
 filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
 
-convergence_analysis(4,@test_function,0.5,iguess,iguess_2,filter_list)
+convergence_analysis(,@test_function,0.5,iguess,iguess_2,filter_list)

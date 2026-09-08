@@ -19,17 +19,22 @@ function [x_0, exit_flag] = secant_solver(fun,x_0,x_1,dxtol,ftol,max_iter,dxmax)
 
     [f_x_0, dfdx_0] = fun(x_0);
     [f_x_1, dfdx_1] = fun(x_1);
-    x = ((x_1*f_x_0) - (x_0*f_x_1))/(f_x_0 - f_x_1);
+    % x = ((x_1*f_x_0) - (x_0*f_x_1))/(f_x_0 - f_x_1);
 
-    while abs(f_x_1) > ftol && abs(x-x_0) > dxtol
+    while abs(f_x_0) > ftol && abs(f_x_0 - f_x_1) > dxtol
         
-        if abs(x-x_0) > dxmax
-            exit_flag = 1;
-            break
-        end
+        % if abs(x-x_0) > dxmax
+        %     exit_flag = 1;
+        %     break
+        % end
 
-        x_1 = x_0;
-        x_0 = x;
+        temp_x0 = x_0;
+        x_0 = ((x_1*f_x_0) - (x_0*f_x_1))/(f_x_0 - f_x_1);
+        x_1 = temp_x0; 
+
+
+        % x_1 = x_0;
+        % x_0 = x;
         [f_x_0, ~] = fun(x_0);
         [f_x_1, ~] = fun(x_1);
         
@@ -38,7 +43,7 @@ function [x_0, exit_flag] = secant_solver(fun,x_0,x_1,dxtol,ftol,max_iter,dxmax)
             break
        end
 
-       x = ((x_1*f_x_0) - (x_0*f_x_1))/(f_x_0 - f_x_1);
+       % x = ((x_1*f_x_0) - (x_0*f_x_1))/(f_x_0 - f_x_1);
 
        iter = iter + 1;
 
@@ -53,4 +58,4 @@ end
 %exit_flag = 2 is iter limit
 %exit_flag = 0 is ran successfully
 
-[root, flag] = secant_solver(@test_function, -5, 5, 1e-14, 1e-14, 100, 50)
+% [root, flag] = secant_solver(@test_function, -5, 5, 1e-14, 1e-14, 100, 50)

@@ -44,4 +44,4 @@ function [x, exit_flag] = bisection_solver(func,x_left,x_right,dxtol,ftol, max_i
 end
 
 
-[root, exit_flag] = bisection_solver(@test_function, 30, 40, 10e-14, 10e-14, 100)
+% [root, exit_flag] = bisection_solver(@test_function, 30, 40, 10e-14, 10e-14, 100)
