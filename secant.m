@@ -35,8 +35,9 @@ function [x_0, exit_flag] = secant_solver(fun,x_0,x_1,dxtol,ftol,max_iter,dxmax)
 
         % x_1 = x_0;
         % x_0 = x;
+        f_x_1 = f_x_0;
         [f_x_0, ~] = fun(x_0);
-        [f_x_1, ~] = fun(x_1);
+        % [f_x_1, ~] = fun(x_1);
         
        if f_x_0 - f_x_1 == 0
             exit_flag = 1;
@@ -57,5 +58,4 @@ end
 %exit_flag = 1 is division error
 %exit_flag = 2 is iter limit
 %exit_flag = 0 is ran successfully
-
-% [root, flag] = secant_solver(@test_function, -5, 5, 1e-14, 1e-14, 100, 50)
+%[root, flag] = secant_solver(@test_function, -5, 5, 1e-14, 1e-14, 100, 50)

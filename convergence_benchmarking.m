@@ -58,7 +58,7 @@ x_guess0, guess_list1, guess_list2, filter_list)
         my_recorder.clear_input_list();
         %Call your root finder using the recording function:
         if solver_flag == 1
-            x_root = bisection(f_record,x0,x1,dxtol,ftol, max_iter);
+            [x_root, ~, guess_list] = bisection(f_record,x0,x1,dxtol,ftol, max_iter);
         elseif solver_flag == 2
             x_root = newton(f_record,x0,dxtol,ftol,max_iter,dxmax);
         elseif solver_flag == 3
@@ -67,14 +67,20 @@ x_guess0, guess_list1, guess_list2, filter_list)
             x_root = fzero(f_record,x0);
         end
         %See what input values were used when f_record was called:
-        input_list = my_recorder.get_input_list();
-        %at this point, input_list will be populated with the values that
-        %the solver called at each iteration.
-        %In other words, it is now [x_1,x_2,...x_n-1,x_n]
-        %append the collected data to the compilation
-        x_current_list = [x_current_list,input_list(1:end-1)];
-        x_next_list = [x_next_list,input_list(2:end)];
-        index_list = [index_list,1:length(input_list)-1];
+        if solver_flag ~= 1
+            input_list = my_recorder.get_input_list();
+            %at this point, input_list will be populated with the values that
+            %the solver called at each iteration.
+            %In other words, it is now [x_1,x_2,...x_n-1,x_n]
+            %append the collected data to the compilation
+            x_current_list = [x_current_list,input_list(1:end-1)];
+            x_next_list = [x_next_list,input_list(2:end)];
+            index_list = [index_list,1:length(input_list)-1];
+        else
+            x_current_list = [x_current_list,guess_list(1:end-1)];
+            x_next_list = [x_next_list,guess_list(2:end)];
+            index_list = [index_list,1:length(guess_list)-1];
+        end
     end
 
     %At this point, x_current_list corresponds to many many
@@ -124,10 +130,11 @@ x_guess0, guess_list1, guess_list2, filter_list)
     loglog(fit_line_x,fit_line_y,'k-','linewidth',2)
     hold off
     xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
-    title('Error Convergence Plot for F0 Method');
+    ylim([10E-20 10E5])
+    title('Error Convergence Plot for Fzero Method');
     legend(["Raw", "Filtered","Regression Fit"],Location="Northwest", FontSize=15)
 
-    exportgraphics(gca, 'plots/f0.png', 'Resolution', 300);
+    exportgraphics(gca, 'plots/fzero.png', 'Resolution', 300);
 
 end
 
@@ -175,10 +182,10 @@ end
 num_iter = 1000;
 i_guess_lower = -5;
 i_guess_upper = 5;
-iguess = linspace(i_guess_lower, i_guess_upper, num_iter);
+%iguess = linspace(i_guess_lower, i_guess_upper, num_iter);
 % ref = 0.5;
-% iguess = linspace(ref-2,ref+2,num_iter);
-
+iguess = linspace(ref-2,ref+2,num_iter);
+% 
 iguess_2 = iguess + 0.1;
 
 filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
