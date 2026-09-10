@@ -1,4 +1,5 @@
 x_guess = linspace(0, 50, 1000);
+x_zero = zeros(1000);
 
 dxtol = 1e-12;
 ftol = 1e-12;
@@ -33,10 +34,12 @@ plot(plot_x, y)
 hold on
 plot(x_newt_good, y_newt_good, "ro", 'Color','g')
 plot(x_newt_bad, y_newt_bad, "ro", 'Color','r')
+plot(target_root, 0, "o", "MarkerFaceColor","k")
+plot(plot_x, x_zero, 'Color', 'k');
 title("Newton's Method Initial Guess Evaluation")
 ylabel("F(x)")
 xlabel("x")
-legend("Function", "Successful Initial Guesses", "Failed Initial Guesses", Location='northwest')
+legend("Function", "Successful Initial Guesses", "Failed Initial Guesses", "Root Location", Location='northwest')
 hold off
 exportgraphics(gca, 'plots/newton_sigmoid.png', 'Resolution', 300);
 
@@ -69,10 +72,12 @@ plot(plot_x, y)
 hold on
 plot(x_fzero_good, y_fzero_good, "ro", 'Color','g')
 plot(x_fzero_bad, y_fzero_bad, "ro", 'Color','r')
+plot(target_root, 0, "o", "MarkerFaceColor","k")
+plot(plot_x, x_zero, 'Color', 'k');
 title("Fzero Method Initial Guess Evaluation")
 ylabel("F(x)")
 xlabel("x")
-legend("Function", "Successful Initial Guesses", "Failed Initial Guesses", Location='northwest')
+legend("Function", "Successful Initial Guesses", "Root Location", Location='northwest')
 hold off
 exportgraphics(gca, 'plots/fzero_sigmoid.png', 'Resolution', 300);
 
@@ -88,6 +93,9 @@ y_bi_good = [];
 x_bi_bad = [];
 y_bi_bad = [];
 target_root = fzero(@sigmoid, 30)
+
+lines = ones(1000) * target_root;
+lines_2 = linspace(0, 50, 1000);
 
 for i=1:length(x_list)^2
     [x, exit_flag] = bisection(@sigmoid,x_left(i), x_right(i), dxtol,ftol,max_iter);
@@ -106,9 +114,11 @@ hold on
 plot(x_bi_good, y_bi_good, "o", 'MarkerFaceColor','g')
 plot(x_bi_bad, y_bi_bad, "o", 'MarkerFaceColor','r')
 plot(target_root, target_root, "o", "MarkerFaceColor","k")
+plot(lines, lines_2, 'Color', 'k')
+plot(lines_2, lines, 'Color', 'k')
 title("Bisection Method Initial Guess Evaluation")
-ylabel("x left")
-xlabel("x right")
+ylabel("x right")
+xlabel("x left")
 legend("Successful Initial Guesses", "Failed Initial Guesses", "Root Location", Location='northwest')
 hold off
 exportgraphics(gca, 'plots/bisection_sigmoid.png', 'Resolution', 300);
@@ -139,10 +149,13 @@ figure();
 hold on
 plot(x_sec_good, y_sec_good, "o", 'MarkerFaceColor','g')
 plot(x_sec_bad, y_sec_bad, "o", 'MarkerFaceColor','r')
+plot(target_root, target_root, "o", "MarkerFaceColor","k")
 title("Secant Method Initial Guess Evaluation")
-ylabel("x left")
-xlabel("x right")
-legend("Successful Initial Guesses", "Failed Initial Guesses", Location='northwest')
+plot(lines, lines_2, 'Color', 'k')
+plot(lines_2, lines, 'Color', 'k')
+ylabel("x right")
+xlabel("x left")
+legend("Successful Initial Guesses", "Failed Initial Guesses", "Root Location", Location='northwest')
 hold off
 exportgraphics(gca, 'plots/secant_sigmoid.png', 'Resolution', 300);
 
