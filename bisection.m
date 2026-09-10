@@ -20,7 +20,7 @@ function [x, exit_flag, guess_list] = bisection_solver(func,x_left,x_right,dxtol
     while abs(func_m) > ftol && abs(x_left - x_right) > dxtol
         x_m = (x_left+x_right)/2;
 
-        func_m = (x_m.^3)/100 - (x_m.^2)/8 + 2*x_m + 6*sin(x_m/2+6) -.7 - exp(x_m/6);
+        func_m = func(x_m);
         % [func_l, ~] = func(x_left);
         %[func_r, ~] = func(x_right);
 

@@ -11,8 +11,11 @@
 function convergence_analysis(solver_flag, fun, ...
 x_guess0, guess_list1, guess_list2, filter_list)
 
-
-    target_root = fzero(fun,x_guess0);
+    dxtol = 1e-12;
+    ftol = 1e-12;
+    max_iter = 200;
+    dxmax = 1e10;
+    target_root = newton(fun,x_guess0,dxtol,ftol,max_iter,dxmax);
      if solver_flag == 2
             [dfdx,d2fdx2] = approximate_derivative(fun,target_root);
             k_pred = abs(0.5*(d2fdx2/dfdx))
@@ -183,11 +186,12 @@ num_iter = 1000;
 i_guess_lower = -5;
 i_guess_upper = 5;
 %iguess = linspace(i_guess_lower, i_guess_upper, num_iter);
-% ref = 0.5;
+ref = .5;
 iguess = linspace(ref-2,ref+2,num_iter);
 % 
 iguess_2 = iguess + 0.1;
 
 filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
+filter_list_parabola = [1e-6, 1e-2, 1e-6, 1e-2, 2];
 
-convergence_analysis(4,@test_function,0.5,iguess,iguess_2,filter_list)
+convergence_analysis(1,@test_function,.5,iguess,iguess_2,filter_list)
