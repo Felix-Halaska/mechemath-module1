@@ -83,7 +83,7 @@ end
 %OUTPUTS:
 %x_range: the x limits of the bounding box in the form [x_min,x_max]
 %y_range: the y limits of the bounding box in the form [y_min,y_max]
-function [x_range,y_range,x_root_right,y_root_bottom] = compute_bounding_box(x0,y0,theta,egg_params)
+function [x_range,y_range,x_right,y_bottom] = compute_bounding_box(x0,y0,theta,egg_params)
     dxtol = 1e-12;
     ftol = 1e-12;
     max_iter = 2000;
@@ -114,21 +114,17 @@ function [x_range,y_range,x_root_right,y_root_bottom] = compute_bounding_box(x0,
     if x_1 > x_2
         x_left = x_2;
         x_right = x_1;
-        x_root_right = x_roots(1);
     else
         x_left = x_1;
         x_right = x_2;
-        x_root_right = x_roots(2);
     end
     
     if y_1 > y_2
         y_bottom = y_2;
         y_top = y_1;
-        y_root_bottom = y_roots(2);
     else
         y_bottom = y_1;
         y_top = y_2;
-        y_root_bottom = y_roots(1);
     end
     
     x_range = [x_left,x_right];
@@ -175,7 +171,7 @@ function [delta_wall, zero] = wall_dist(fun, t, x_wall)
     egg_params.a = 3; egg_params.b = 2; egg_params.c = .15;
 
     [x0,y0,theta] = fun(t);
-    [x_range, ~,~,~] = compute_bounding_box(x0, y0, theta, egg_params);
+    [x_range, ~] = compute_bounding_box(x0, y0, theta, egg_params);
 
     delta_wall = abs(x_wall - x_range(2));
     zero = 0;
@@ -187,7 +183,7 @@ function [delta_floor, zero] = floor_dist(fun, t, y_floor)
     egg_params.a = 3; egg_params.b = 2; egg_params.c = .15;
 
     [x0,y0,theta] = fun(t);
-    [~, y_range,~,~] = compute_bounding_box(x0, y0, theta, egg_params);
+    [~, y_range] = compute_bounding_box(x0, y0, theta, egg_params);
 
     delta_floor = abs(y_floor - y_range(1));
     zero = 0;
@@ -222,7 +218,7 @@ egg_params = struct();
 egg_params.a = 3; egg_params.b = 2; egg_params.c = .15;
 
 
-x_wall = 50;
+x_wall = 20;
 y_ground = 5;
 [t_floor, t_wall] = collision_func(@egg_trajectory01,egg_params, y_ground, x_wall);
 
@@ -259,13 +255,13 @@ for i = 1:length(frame_time)
     drawnow;
 end
 
-[x_range,y_range,x_root,y_root] = compute_bounding_box(newx,newy,new_theta,egg_params);
+[x_range,y_range] = compute_bounding_box(newx,newy,new_theta,egg_params);
 
 if type == 0
-    [V, ~] = egg_func(y_root, newx, newy, new_theta, egg_params);
+    [V, ~] = egg_func(y_range(1), newx, newy, new_theta, egg_params);
     plot(V(1), V(2), "ro", "MarkerSize",6,"MarkerFaceColor","r")
 else
-    [V, ~] = egg_func(x_root, newx, newy, new_theta, egg_params);
+    [V, ~] = egg_func(x_range(2), newx, newy, new_theta, egg_params);
     plot(V(1), V(2), "ro", "MarkerSize",6,"MarkerFaceColor","r")
 end
 
