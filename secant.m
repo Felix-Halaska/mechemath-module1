@@ -17,8 +17,8 @@ function [x_0, exit_flag] = secant_solver(fun,x_0,x_1,dxtol,ftol,max_iter,dxmax)
     iter = 1;
     exit_flag = 0;
 
-    [f_x_0, dfdx_0] = fun(x_0);
-    [f_x_1, dfdx_1] = fun(x_1);
+    [f_x_0, ~] = fun(x_0);
+    [f_x_1, ~] = fun(x_1);
     % x = ((x_1*f_x_0) - (x_0*f_x_1))/(f_x_0 - f_x_1);
 
     while abs(f_x_0) > ftol && abs(f_x_0 - f_x_1) > dxtol
