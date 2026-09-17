@@ -6,6 +6,11 @@ ftol = 1e-12;
 max_iter = 2000;
 dxmax = 1e10;
 
+fontsize_axis = 14;
+fontsize_title = 18;
+ax = gca;
+ax.FontSize = 13;
+
 % NEWTON 
 x_newt_good = [];
 y_newt_good = [];
@@ -29,17 +34,20 @@ end
 figure();
 plot_x = linspace(0, 50, 1000);
 [y, ~] = sigmoid(plot_x);
-
-plot(plot_x, y)
+fontsize_axis = 14;
+fontsize_title = 16;
+ax = gca;
+ax.FontSize = 14;
 hold on
-plot(x_newt_good, y_newt_good, "ro", 'Color','g')
-plot(x_newt_bad, y_newt_bad, "ro", 'Color','r')
-plot(target_root, 0, "o", "MarkerFaceColor","k")
+plot(x_newt_good, y_newt_good, "ro", 'Color','g', MarkerFaceColor='g')
+plot(x_newt_bad, y_newt_bad, "ro", 'Color','r', MarkerFaceColor='r')
+plot(target_root, 0, "o", "MarkerFaceColor","k", MarkerEdgeColor='k')
 plot(plot_x, x_zero, 'Color', 'k');
-title("Newton's Method Initial Guess Evaluation")
-ylabel("F(x)")
-xlabel("x")
-legend("Function", "Successful Initial Guesses", "Failed Initial Guesses", "Root Location", Location='northwest')
+ylim([-5 6])
+title("Newton's Method Initial Guess Convergence Evaluation for Sigmoid Function", 'FontSize', fontsize_title, "Interpreter","latex")
+ylabel("Sigmoid Function - F(x0) (-)", 'FontSize', fontsize_axis, "Interpreter","latex")
+xlabel("Initial Guess - x0 (-)", 'FontSize', fontsize_axis, "Interpreter","latex")
+legend( "Successful Initial Guesses", "Failed Initial Guesses", "Root Location", Location='northwest', fontsize=16, Interpreter="latex")
 hold off
 exportgraphics(gca, 'plots/newton_sigmoid.png', 'Resolution', 300);
 
@@ -67,17 +75,20 @@ end
 figure();
 plot_x = linspace(0, 50, 1000);
 [y, ~] = sigmoid(plot_x);
-
-plot(plot_x, y)
+fontsize_axis = 14;
+fontsize_title = 16;
+ax = gca;
+ax.FontSize = 13;
 hold on
-plot(x_fzero_good, y_fzero_good, "ro", 'Color','g')
-plot(x_fzero_bad, y_fzero_bad, "ro", 'Color','r')
-plot(target_root, 0, "o", "MarkerFaceColor","k")
-plot(plot_x, x_zero, 'Color', 'k');
-title("Fzero Method Initial Guess Evaluation")
-ylabel("F(x)")
-xlabel("x")
-legend("Function", "Successful Initial Guesses", "Root Location", Location='northwest')
+plot(x_fzero_good, y_fzero_good, "ro", 'Color','g', MarkerFaceColor='g')
+plot(x_fzero_bad, y_fzero_bad, "ro", 'Color','r', MarkerFaceColor='r')
+plot(target_root, 0, "o", "MarkerFaceColor","k", MarkerEdgeColor='k')
+plot(plot_x, x_zero, 'Color', 'k', MarkerEdgeColor='k');
+ylim([-5 6])
+title("Fzero Method Initial Guess Convergence Evaluation for Sigmoid Function", 'FontSize', fontsize_title, "Interpreter","latex")
+ylabel("Sigmoid Function - F(x0) (-)", 'FontSize', fontsize_axis, "Interpreter","latex")
+xlabel("Initial Guess - x0 (-)", 'FontSize', fontsize_axis, "Interpreter","latex")
+legend("Successful Initial Guesses", "Root Location", Location='northwest' ,fontsize=16, Interpreter="latex")
 hold off
 exportgraphics(gca, 'plots/fzero_sigmoid.png', 'Resolution', 300);
 
@@ -110,16 +121,21 @@ for i=1:length(x_list)^2
 end
 
 figure();
+fontsize_axis = 14;
+fontsize_title = 16;
+ax = gca;
+ax.FontSize = 13;
 hold on
-plot(x_bi_good, y_bi_good, "o", 'MarkerFaceColor','g')
-plot(x_bi_bad, y_bi_bad, "o", 'MarkerFaceColor','r')
-plot(target_root, target_root, "o", "MarkerFaceColor","k")
+plot(x_bi_good, y_bi_good, "o", 'MarkerFaceColor','g', MarkerEdgeColor='g')
+plot(x_bi_bad, y_bi_bad, "o", 'MarkerFaceColor','r', MarkerEdgeColor='r')
+plot(target_root, target_root, "o", "MarkerFaceColor","k", MarkerEdgeColor='k')
 plot(lines, lines_2, 'Color', 'k')
 plot(lines_2, lines, 'Color', 'k')
-title("Bisection Method Initial Guess Evaluation")
-ylabel("x right")
-xlabel("x left")
-legend("Successful Initial Guesses", "Failed Initial Guesses", "Root Location", Location='northwest')
+t = title("Bisection Method Initial Guess Convergence Evaluation for Sigmoid Function", 'FontSize', fontsize_title, "Interpreter","latex")
+t.Position(2) = t.Position(2) + .5;
+ylabel("Initial Right X Guess (-)", 'FontSize', fontsize_axis, "Interpreter","latex")
+xlabel("Initial Left X Guess (-)", 'FontSize', fontsize_axis, "Interpreter","latex")
+legend("Successful Initial Guesses", "Failed Initial Guesses", "Root Location", Location='northwest',fontsize=16, Interpreter="latex")
 hold off
 exportgraphics(gca, 'plots/bisection_sigmoid.png', 'Resolution', 300);
 
@@ -146,16 +162,21 @@ for i=1:length(x_list)^2
 end
 
 figure();
+fontsize_axis = 14;
+fontsize_title = 16;
+ax = gca;
+ax.FontSize = 13;
 hold on
-plot(x_sec_good, y_sec_good, "o", 'MarkerFaceColor','g')
-plot(x_sec_bad, y_sec_bad, "o", 'MarkerFaceColor','r')
-plot(target_root, target_root, "o", "MarkerFaceColor","k")
-title("Secant Method Initial Guess Evaluation")
+plot(x_sec_good, y_sec_good, "o", 'MarkerFaceColor','g', MarkerEdgeColor='g')
+plot(x_sec_bad, y_sec_bad, "o", 'MarkerFaceColor','r', MarkerEdgeColor='r')
+plot(target_root, target_root, "o", "MarkerFaceColor","k", MarkerEdgeColor='k')
+ylabel("Initial X1 Guess (-)", 'FontSize', fontsize_axis, Interpreter ="latex")
+xlabel("Initial X0 Guess (-)", 'FontSize', fontsize_axis,  Interpreter ="latex")
+t = title("Secant Method Initial Guess Convergence Evaluation for Sigmoid Function", 'FontSize', fontsize_title, "Interpreter","latex")
+t.Position(2) = t.Position(2) + .5;
 plot(lines, lines_2, 'Color', 'k')
 plot(lines_2, lines, 'Color', 'k')
-ylabel("x right")
-xlabel("x left")
-legend("Successful Initial Guesses", "Failed Initial Guesses", "Root Location", Location='northwest')
+legend("Successful Initial Guesses", "Failed Initial Guesses", "Root Location", Location='northwest',fontsize=16, Interpreter="latex")
 hold off
 exportgraphics(gca, 'plots/secant_sigmoid.png', 'Resolution', 300);
 

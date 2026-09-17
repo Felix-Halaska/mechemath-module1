@@ -128,14 +128,19 @@ x_guess0, guess_list1, guess_list2, filter_list)
         'ro','markerfacecolor','r','markersize',2);
     hold on
     loglog(x_regression,y_regression,...
-        'ro','markerfacecolor','b','markersize',2);
+        'ro','markerfacecolor','b','markersize',4, 'MarkerEdgeColor','b');
     %plot on a loglog plot.
     loglog(fit_line_x,fit_line_y,'k-','linewidth',2)
     hold off
-    xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
-    ylim([10E-20 10E5])
-    title('Error Convergence Plot for Fzero Method');
-    legend(["Raw", "Filtered","Regression Fit"],Location="Northwest", FontSize=15)
+    fontsize_axis = 14;
+    fontsize_title = 16;
+    ax = gca;
+    ax.FontSize = 14;
+    xlabel('Error at Current Iteration (-)', 'FontSize', fontsize_axis, "Interpreter","latex"); ylabel('Error at Next Iteration (-)', 'FontSize', fontsize_axis, "Interpreter","latex");
+    ylim([10E-18 10E0])
+    xlim([10E-17 10E3])
+    title('Error Convergence Plot for FZero Method', 'FontSize', fontsize_title, "Interpreter","latex");
+    legend(["Raw", "Filtered","Regression Fit"],Location="Northwest",fontsize=16, Interpreter="latex")
 
     exportgraphics(gca, 'plots/fzero.png', 'Resolution', 300);
 
@@ -191,7 +196,7 @@ iguess = linspace(ref-2,ref+2,num_iter);
 % 
 iguess_2 = iguess + 0.1;
 
-filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
+filter_list = [1e-14, 1e-2, 1e-14, 1e-2, 2];
 filter_list_parabola = [1e-6, 1e-2, 1e-6, 1e-2, 2];
 
-convergence_analysis(1,@test_function,.5,iguess,iguess_2,filter_list)
+convergence_analysis(4,@test_function,.5,iguess,iguess_2,filter_list)
