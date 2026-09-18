@@ -51,4 +51,4 @@ function [x, exit_flag, guess_list] = bisection_solver(func,x_left,x_right,dxtol
 end
 
 
-% [root, exit_flag] = bisection_solver(@test_function, -5, 5, 10e-14, 10e-14, 1000)
+ %[root, exit_flag] = bisection_solver(@sigmoid, 20, 30, 10e-14, 10e-14, 1000)
