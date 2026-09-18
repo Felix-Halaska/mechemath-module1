@@ -221,8 +221,8 @@ end
 egg_params = struct();
 egg_params.a = 3; egg_params.b = 2; egg_params.c = .15;
 
-
-x_wall = 50;
+fig = figure();
+x_wall = 30;
 y_ground = 5;
 [t_floor, t_wall] = collision_func(@egg_trajectory01,egg_params, y_ground, x_wall);
 
@@ -235,20 +235,28 @@ else
     type = 1;
 end
 
-frame_time = linspace(0, t_collision, 1000);
+frame_time = linspace(0, t_collision, 100);
 
 s = linspace(0,1,100);
+[x0, y0, theta] = egg_trajectory01(0);
 
 [V,~] = egg_func(s,x0,y0,theta,egg_params);
 
-clf;
 axes = plot(V(1,:), V(2,:), 'k');
 hold on
 xline(x_wall, "b-")
 yline(y_ground, "b-")
 axis equal
 axis square
-axis([0,50,0,50])
+axis([0,55,0,55])
+path = 'C:\Users\mgazit\OneDrive - Olin College of Engineering\MechE Math\mechemath-module1\videos\';
+fname = 'egg_hitting_wall.avi';
+input = [path, fname]
+
+writerObj = VideoWriter(input);
+open(writerObj);
+
+
 
 for i = 1:length(frame_time)
     [newx, newy, new_theta] = egg_trajectory01(frame_time(i));
@@ -257,6 +265,9 @@ for i = 1:length(frame_time)
     set(axes, "xdata", V(1,:), "ydata", V(2,:));
 
     drawnow;
+
+    current_frame = getframe(fig);
+    writeVideo(writerObj, current_frame);
 end
 
 [x_range,y_range,x_root,y_root] = compute_bounding_box(newx,newy,new_theta,egg_params);
@@ -264,9 +275,15 @@ end
 if type == 0
     [V, ~] = egg_func(y_root, newx, newy, new_theta, egg_params);
     plot(V(1), V(2), "ro", "MarkerSize",6,"MarkerFaceColor","r")
+    current_frame = getframe(fig);
+    writeVideo(writerObj, current_frame);
 else
     [V, ~] = egg_func(x_root, newx, newy, new_theta, egg_params);
     plot(V(1), V(2), "ro", "MarkerSize",6,"MarkerFaceColor","r")
+    current_frame = getframe(fig);
+    writeVideo(writerObj, current_frame);
 end
+
+close(writerObj);
 
 hold off
