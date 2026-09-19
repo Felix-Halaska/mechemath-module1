@@ -221,8 +221,8 @@ end
 egg_params = struct();
 egg_params.a = 3; egg_params.b = 2; egg_params.c = .15;
 
-
-x_wall = 50;
+fig = figure();
+x_wall = 30;
 y_ground = 5;
 [t_floor, t_wall] = collision_func(@egg_trajectory01,egg_params, y_ground, x_wall);
 
@@ -235,29 +235,32 @@ else
     type = 1;
 end
 
-frame_time = linspace(0, t_collision, 1000);
+frame_time = linspace(0, t_collision, 100);
 
 s = linspace(0,1,100);
 [x0, y0, theta] = egg_trajectory01(0);
 
 [V,~] = egg_func(s,x0,y0,theta,egg_params);
 
-clf;
-axes = plot(V(1,:), V(2,:), 'k');
+axes = plot(V(1,:), V(2,:), 'k', LineWidth=3);
 hold on
-xline(x_wall, "b-")
-yline(y_ground, "b-")
+xline(x_wall, "g-", LineWidth=3)
+yline(y_ground, "b-", LineWidth=3)
 axis equal
 axis square
-axis([0,50,0,50])
-path = 'C:\Users\mgazit\OneDrive - Olin College of Engineering\MechE Math\mechemath-module1\videos\";
-fname = 'egg_hitting_ground.avi';
+axis([0,55,0,55])
+legend("Egg", "Wall", "Ground", FontSize=14, Interpreter= "latex",  Location='northwest');
+title("Egg Ht", 'FontSize', 16, "Interpreter","latex")
+ylabel("Y (-)",'FontSize', 14, "Interpreter","latex")
+xlabel("X (-)",'FontSize', 14, "Interpreter","latex")
+path = 'C:\Users\mgazit\OneDrive - Olin College of Engineering\MechE Math\mechemath-module1\videos\';
+fname = 'egg_hitting_wall.avi';
 input = [path, fname]
 
 writerObj = VideoWriter(input);
 open(writerObj);
 
-fig = figure();
+
 
 for i = 1:length(frame_time)
     [newx, newy, new_theta] = egg_trajectory01(frame_time(i));

@@ -222,7 +222,7 @@ egg_params = struct();
 egg_params.a = 3; egg_params.b = 2; egg_params.c = .15;
 
 fig = figure();
-x_wall = 30;
+x_wall = 50;
 y_ground = 5;
 [t_floor, t_wall] = collision_func(@egg_trajectory01,egg_params, y_ground, x_wall);
 
@@ -242,15 +242,19 @@ s = linspace(0,1,100);
 
 [V,~] = egg_func(s,x0,y0,theta,egg_params);
 
-axes = plot(V(1,:), V(2,:), 'k');
+axes = plot(V(1,:), V(2,:), 'k', LineWidth=3);
 hold on
-xline(x_wall, "b-")
-yline(y_ground, "b-")
+xline(x_wall, "g-", LineWidth=3)
+yline(y_ground, "b-", LineWidth=3)
 axis equal
 axis square
 axis([0,55,0,55])
+title("Egg Collision Detection", 'FontSize', 16, "Interpreter","latex")
+ylabel("Y (-)",'FontSize', 14, "Interpreter","latex")
+xlabel("X (-)",'FontSize', 14, "Interpreter","latex")
+legend("Egg", "Wall", "Ground", "Collision Site",FontSize=14, Interpreter= "latex",  Location='northwest');
 path = 'C:\Users\mgazit\OneDrive - Olin College of Engineering\MechE Math\mechemath-module1\videos\';
-fname = 'egg_hitting_wall.avi';
+fname = 'egg_hitting_ground.avi';
 input = [path, fname]
 
 writerObj = VideoWriter(input);
@@ -274,15 +278,16 @@ end
 
 if type == 0
     [V, ~] = egg_func(y_root, newx, newy, new_theta, egg_params);
-    plot(V(1), V(2), "ro", "MarkerSize",6,"MarkerFaceColor","r")
+    plot(V(1), V(2), "ro", "MarkerSize",10,"MarkerFaceColor","r","MarkerEdgeColor",'r')
     current_frame = getframe(fig);
     writeVideo(writerObj, current_frame);
 else
     [V, ~] = egg_func(x_root, newx, newy, new_theta, egg_params);
-    plot(V(1), V(2), "ro", "MarkerSize",6,"MarkerFaceColor","r")
+    plot(V(1), V(2), "ro", "MarkerSize",10,"MarkerFaceColor","r", "MarkerEdgeColor",'r')
     current_frame = getframe(fig);
     writeVideo(writerObj, current_frame);
 end
+legend("Egg", "Wall", "Ground", "Collision Site",FontSize=14, Interpreter= "latex",  Location='northwest');
 
 close(writerObj);
 
